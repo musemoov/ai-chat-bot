@@ -1,21 +1,21 @@
 import React, { useEffect, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
 
-const VortexGlow = () => {
+const VortexGlow = ({ onStartChat }) => {
   const canvasRef = useRef(null);
   const particleCount = 700;
   const particlePropCount = 9;
   const particlePropsLength = particleCount * particlePropCount;
-  const rangeY = 100; // 초기 범위 좁힘 (원래대로 되돌림)
+  const rangeY = 200;
   const baseTTL = 300;
   const rangeTTL = 400;
-  const baseSpeed = 0.0;
-  const rangeSpeed = 0.1; // 훨씬 더 느리게
+  const baseSpeed = 0.005;
+  const rangeSpeed = 0.2;
   const baseRadius = 1;
   const rangeRadius = 2;
   const baseHue = 220;
   const rangeHue = 100;
-  const noiseSteps = 3;
+  const noiseSteps = 6;
   const xOff = 0.00125;
   const yOff = 0.00125;
   const zOff = 0.0005;
@@ -27,8 +27,8 @@ const VortexGlow = () => {
   const center = useRef([0, 0]);
 
   const TAU = 2 * Math.PI;
-  const rand = n => n * Math.random();
-  const randRange = n => n - rand(2 * n);
+  const rand = (n) => n * Math.random();
+  const randRange = (n) => n - rand(2 * n);
   const fadeInOut = (t, m) => {
     let hm = 0.5 * m;
     return Math.abs(((t + hm) % m) - hm) / hm;
@@ -46,7 +46,10 @@ const VortexGlow = () => {
       const speed = baseSpeed + rand(rangeSpeed);
       const radius = baseRadius + rand(rangeRadius);
       const hue = baseHue + rand(rangeHue);
-      particleProps.current.set([x, y, vx, vy, life, ttl, speed, radius, hue], i);
+      particleProps.current.set(
+        [x, y, vx, vy, life, ttl, speed, radius, hue],
+        i
+      );
     }
   };
 
@@ -103,21 +106,55 @@ const VortexGlow = () => {
       const radius = particleProps.current[i + 7];
       const hue = particleProps.current[i + 8];
 
-      const n = noise3D(x * xOff, y * yOff, tick.current * zOff) * noiseSteps * TAU;
-      vx = lerp(vx, Math.cos(n), 0.1); // 훨씬 더 천천히 방향 변화
-      vy = lerp(vy, Math.sin(n), 0.1);
+      const angle =
+        noise3D(x * xOff, y * yOff, tick.current * zOff) * noiseSteps * TAU;
+
+      // 소용돌이 회전 효과를 위해 중심으로부터의 방향 보정
+      const dx = x - center.current[0];
+      const dy = y - center.current[1];
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // 회전 방향과 속도를 조합
+      const swirlStrength = 0.002; // 커질수록 더 세게 회전
+      const swirlAngle = Math.atan2(dy, dx) + swirlStrength * dist;
+
+      vx = lerp(vx, Math.cos(angle + swirlAngle), 0.05);
+      vy = lerp(vy, Math.sin(angle + swirlAngle), 0.05);
+
       const x2 = x + vx * speed;
       const y2 = y + vy * speed;
 
       drawParticle(ctx, x, y, x2, y2, life, ttl, radius, hue);
 
       life++;
-      if (x2 > canvas.width || x2 < 0 || y2 > canvas.height || y2 < 0 || life > ttl) {
+      if (
+        x2 > canvas.width ||
+        x2 < 0 ||
+        y2 > canvas.height ||
+        y2 < 0 ||
+        life > ttl
+      ) {
         const newX = rand(canvas.width);
         const newY = center.current[1] + randRange(rangeY);
-        particleProps.current.set([newX, newY, 0, 0, 0, baseTTL + rand(rangeTTL), baseSpeed + rand(rangeSpeed), baseRadius + rand(rangeRadius), baseHue + rand(rangeHue)], i);
+        particleProps.current.set(
+          [
+            newX,
+            newY,
+            0,
+            0,
+            0,
+            baseTTL + rand(rangeTTL),
+            baseSpeed + rand(rangeSpeed),
+            baseRadius + rand(rangeRadius),
+            baseHue + rand(rangeHue),
+          ],
+          i
+        );
       } else {
-        particleProps.current.set([x2, y2, vx, vy, life, ttl, speed, radius, hue], i);
+        particleProps.current.set(
+          [x2, y2, vx, vy, life, ttl, speed, radius, hue],
+          i
+        );
       }
     }
 
@@ -142,7 +179,30 @@ const VortexGlow = () => {
     return () => window.removeEventListener("resize", () => resize(canvas));
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full" />;
+  return (
+    <div className="relative w-full h-screen">
+      <canvas
+        ref={canvasRef}
+        className="absolute top-0 left-0 w-full h-full z-0"
+      />
+      <div className="absolute top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+      <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
+  Chat with AI
+</h1>
+        <p className="text-white text-[2rem] mb-20 mt-18">
+          Ask anything — get fast, smart answers
+          <br />
+          to help you learn, create, and discover more.
+        </p>
+        <button
+          onClick={onStartChat}
+          className="px-12 py-6 text-[2rem] text-white/100 bg-white/30 opacity-70 backdrop-blur-md border border-white/50 shadow-[0_4px_30px_rgba(0,0,0,0.1)] [border-radius:35px] hover:bg-white/90 hover:text-black hover:opacity-100 transition mt-[-1rem]"
+        >
+          Start Chatting
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default VortexGlow;

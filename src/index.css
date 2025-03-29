@@ -22,8 +22,19 @@ html {
   height: 100vh;
   display: grid;
   place-items: center;
-  background-color: #131927;
+  /* background-color: #131927; */
+   /* 단순 배경색 */
+   /* background-color: #0d0d1a; */
+
+   /* 혹은 그라데이션 */
+   /* background: linear-gradient(135deg, #0c0516, #0f083b, #5416b5); */
+   background: linear-gradient(135deg, #0c0516, #0f083b, #5416b5, #7f3aa1);
+ 
+   /* 혹은 배경 이미지 */
+   /* background: url('/bg.jpg') no-repeat center center / cover; */
 }
+
+
 
 @media (max-width: 500px) {
   html {
@@ -31,3 +42,27 @@ html {
   }
 }
 
+.animate-meteor {
+  animation: meteor linear infinite;
+}
+
+
+
+.twinkling-star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: twinkle ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
