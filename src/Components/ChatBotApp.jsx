@@ -59,11 +59,13 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       localStorage.setItem('chats', JSON.stringify(updatedChats))
       setIsTyping(true)
 
-      const response = await fetch('', {
+      try {
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: ``,
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -73,7 +75,12 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       })
 
       const data = await response.json()
-      const chatResponse = data.choices[0].message.content.trim()
+
+      // const chatResponse = data.choices[0].message.content.trim()
+      const chatResponse = data?.choices?.[0]?.message?.content?.trim()
+      if (!chatResponse) {
+        throw new Error("유효한 응답이 없습니다.")
+      }
 
       const newResponse = {
         type: 'response',
@@ -94,6 +101,10 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       })
       setChats(updatedChatsWithResponse)
       localStorage.setItem('chats', JSON.stringify(updatedChatsWithResponse))
+    } catch (error) {
+      console.error('API 호출 실패:', error)
+      setIsTyping(false)
+    }
     }
   }
 
@@ -161,7 +172,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
               {msg.text} <span>{msg.timestamp}</span>
             </div>
           ))}
-          {isTyping && <div className="typing">Typing...</div>}
+          {isTyping && <div className="typing">Writing...</div>}
           <div ref={chatEndRef}></div>
         </div>
         <form className="msg-form" onSubmit={(e) => e.preventDefault()}>
@@ -177,7 +188,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
           <input
             type="text"
             className="msg-input"
-            placeholder="Type a message..."
+            placeholder="Ask me anything"
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
+import { motion } from "framer-motion";
 
 const VortexGlow = ({ onStartChat }) => {
   const canvasRef = useRef(null);
@@ -89,6 +90,7 @@ const VortexGlow = ({ onStartChat }) => {
 
   const animate = () => {
     const canvas = canvasRef.current;
+    if (!canvas) return; // canvasRef.current가 null인 경우 함수 종료
     const ctx = canvas.getContext("2d");
     tick.current++;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -185,23 +187,30 @@ const VortexGlow = ({ onStartChat }) => {
         ref={canvasRef}
         className="absolute top-0 left-0 w-full h-full z-0"
       />
-      <div className="absolute top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-      <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
-  Chat with AI
-</h1>
-        <p className="text-white text-[2rem] mb-20 mt-18">
-          Ask anything — get fast, smart answers
-          <br />
-          to help you learn, create, and discover more.
-        </p>
-        <button
-          onClick={onStartChat}
-          className="px-12 py-6 text-[2rem] text-white/100 bg-white/30 opacity-70 backdrop-blur-md border border-white/50 shadow-[0_4px_30px_rgba(0,0,0,0.1)] [border-radius:35px] hover:bg-white/90 hover:text-black hover:opacity-100 transition mt-[-1rem]"
+      <div className="absolute inset-0 flex items-center justify-center text-center">
+        <motion.div
+          
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 4, ease: "easeOut" }}
         >
-          Start Chatting
-        </button>
+          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
+            Chat with AI
+          </h1>
+          <p className="text-white text-[2rem] mb-20 mt-18">
+            Ask anything — get fast, smart answers
+            <br />
+            to help you learn, create, and discover more.
+          </p>
+          <button
+            onClick={onStartChat}
+            className="px-12 py-6 text-[2rem] text-white/100 bg-white/10 opacity-70 backdrop-blur-md border border-white/70 shadow-[0_4px_30px_rgba(0,0,0,0.1)] [border-radius:35px] hover:bg-white/90 hover:text-black hover:text-extrabold hover:opacity-70 transition mt-[-1rem]"
+          >
+            Start Chatting
+          </button>
+        </motion.div>
       </div>
-    </div>
+     </div>
   );
 };
 
