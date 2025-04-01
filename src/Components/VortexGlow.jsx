@@ -194,10 +194,10 @@ const VortexGlow = ({ onStartChat }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 4, ease: "easeOut" }}
         >
-          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8">
+          <h1 className="text-white text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-bold mb-8">
             Chat with AI
           </h1>
-          <p className="text-white text-[2rem] mb-20 mt-18">
+          <p className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl mb-20 mt-18">
             Ask anything — get fast, smart answers
             <br />
             to help you learn, create, and discover more.

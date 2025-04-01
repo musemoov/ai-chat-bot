@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 2rem 1rem;
-  color: #7b8ebc;
+  color: #ffffff;
 }
 
 .chat-list-header h2 {
@@ -124,7 +124,7 @@
 
 .arrow {
   font-size: 4rem;
-  color: #7b8ebc;
+  color: #ffffff;
   transform: rotate(180deg);
   cursor: pointer;
 }
@@ -166,10 +166,16 @@
 }
 
 .response {
-  background: linear-gradient(135deg, #fe8d5c, #fe4d57);
+  /* background: linear-gradient(135deg, #fe8d5c, #fe4d57); */
+  background: rgba(255, 255, 255, 0.157); /* 투명 유리 느낌 */
+  backdrop-filter: blur(2px);           /* 블러 효과 */
+  -webkit-backdrop-filter: blur(2px);   /* Safari 대응 */
+  border: 3px solid rgba(255, 255, 255, 0.2); /* 테두리 */
+
   border-radius: 0 3rem 3rem 3rem;
   align-self: flex-start;
   text-align: left;
+  color: #ffffff; /* 글자색 대비 필요 */
 }
 
 .prompt span,
@@ -183,7 +189,7 @@
 .typing {
   font-family: 'Exo 2', sans-serif;
   font-size: 1.6rem;
-  color: #7b8ebc;
+  color: #ffffff;
   margin-top: auto;
   margin-bottom: -3rem;
 }
@@ -206,7 +212,7 @@
 
 .msg-form i {
   font-size: 2.5rem;
-  color: #7b8ebc;
+  color: #ffffff;
   cursor: pointer;
 }
 
@@ -228,13 +234,13 @@
   background-color: transparent;
   border: none;
   font-size: 1.8rem;
-  color: #7b8ebc;
+  color: #ffffff;
 }
 
 .msg-input::placeholder {
   font-size: 1.8rem;
   font-weight: 300;
-  color: #7b8ebc;
+  color: #ffffff;
 }
 
 .msg-input:focus::placeholder {

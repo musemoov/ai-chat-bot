@@ -12,6 +12,10 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
   const chatEndRef = useRef(null)
 
   useEffect(() => {
+    console.log('ENV KEY:', import.meta.env.VITE_OPENAI_API_KEY);
+  }, []);
+
+  useEffect(() => {
     const activeChatObj = chats.find((chat) => chat.id === activeChat)
     setMessages(activeChatObj ? activeChatObj.messages : [])
   }, [activeChat, chats])
@@ -32,6 +36,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
   }
 
   const sendMessage = async () => {
+    if (isTyping) return; // 🔹 중복 요청 방지
     if (inputValue.trim() === '') return
 
     const newMessage = {
@@ -74,8 +79,15 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
         }),
       })
 
+      if (!response.ok) {
+        // 에러 내용 출력
+        const errorText = await response.text();
+        throw new Error(`API 호출 실패 상태: ${response.status} - ${errorText}`);
+      }
+
       const data = await response.json()
 
+      
       // const chatResponse = data.choices[0].message.content.trim()
       const chatResponse = data?.choices?.[0]?.message?.content?.trim()
       if (!chatResponse) {
@@ -162,7 +174,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
       </div>
       <div className="chat-window">
         <div className="chat-title" >
-          <h3>Chat with AI</h3>
+          <h3>Happy Chatting</h3>
           <i className="bx bx-menu" onClick={() => setShowChatList(true)}></i>
           <i className="bx bx-arrow-back arrow" onClick={onGoBack}></i>
         </div>
