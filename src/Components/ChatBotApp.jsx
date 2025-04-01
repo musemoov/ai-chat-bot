@@ -11,9 +11,9 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
   const [showChatList, setShowChatList] = useState(false)
   const chatEndRef = useRef(null)
 
-  useEffect(() => {
-    console.log('ENV KEY:', import.meta.env.VITE_OPENAI_API_KEY);
-  }, []);
+  // useEffect(() => {
+  //   console.log('ENV KEY:', import.meta.env.VITE_OPENAI_API_KEY);
+  // }, []);
 
   useEffect(() => {
     const activeChatObj = chats.find((chat) => chat.id === activeChat)
@@ -75,7 +75,7 @@ const ChatBotApp = ({ onGoBack, chats, setChats, activeChat, setActiveChat, onNe
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
           messages: [{ role: 'user', content: inputValue }],
-          max_tokens: 500,
+          max_tokens: 100,
         }),
       })
 
