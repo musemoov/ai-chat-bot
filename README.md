@@ -1,50 +1,32 @@
-🎮 Tic-Tac-Toe Game
-A stylish and interactive Tic-Tac-Toe game built with React and modern CSS. Play against your friend, track moves, and enjoy a glassmorphism-inspired UI.
+💬 AI ChatBot App
+An interactive, modern chat application powered by OpenAI GPT models, built with React and Vite. Includes emoji support, multi-chat functionality, localStorage persistence, and a beautiful animated UI with glow/particle effects.
 
-🔗 Live Demo
-https://your-tictactoe.vercel.app
+✨ Features
+🔥 Ask anything and get smart, fast AI responses
 
-📦 Features
-🧠 Smart Turn Handling
-Automatically tracks player turns based on move history.
+💬 Multi-chat support with local message history
 
-👥 Editable Player Names
-Easily edit player names using an inline form with Edit / Save toggle.
+😄 Emoji picker (via emoji-mart)
 
-🏆 Winner Detection & Draw Handling
-Detects win conditions using all possible board combinations. Displays winner or draw message with a restart option.
+💾 Persistent storage via localStorage
 
-📜 Move Log
-Logs every move in a readable format like Player X selected (row, col).
+🪐 Vortex-style animated background with particle glow
 
-💎 Modern Glassmorphism UI
-Clean and futuristic design using backdrop-filter, soft borders, and glowing hover effects.
+🌙 Glassmorphism UI effects using Tailwind CSS
 
-🎨 Custom Animations
-Pulse and slide-in animations bring the interface to life.
+🚀 Powered by OpenAI GPT (GPT-3.5 / GPT-4o-mini, etc)
 
-🛠 Built With
-React
+🧠 Technologies
+React + Vite
 
-JavaScript (ES6+)
+Tailwind CSS
 
-CSS3 (Glassmorphism, Animations)
+Emoji-mart
 
-Google Fonts - Orbitron
+OpenAI API
 
-📁 Project Structure
+LocalStorage
 
-├── public/
-│   └── background_image.png
-├── src/
-│   ├── components/
-│   │   ├── GameBoard.jsx
-│   │   ├── GameOver.jsx
-│   │   ├── Log.jsx
-│   │   └── Player.jsx
-│   ├── App.jsx
-│   ├── index.css
-│   ├── main.jsx
-│   └── winning-combinations.js
-├── README.md
-└── package.json
+Framer Motion
+
+Simplex Noise (for particle animation)
